@@ -11,18 +11,20 @@ void setup() {
 }
 
 enum States {
-  RED,
-  GREEN,
-  BLUE
+  PASSIVE,
+  HAPPY,
+  ANGRY,
+  AFRAID
 };
 
 // Set the initial (i.e., starting) state
-States state = States::RED;
+States state = States::PASSIVE;
 
 void nextState() {
-  if (state == States::RED) state = States::GREEN;
-  else if (state == States::GREEN) state = States::BLUE;
-  else state = States::RED;
+  if (state == States::PASSIVE) state = States::HAPPY; // after time
+  else if (state == States::HAPPY) state = States::ANGRY; // after time if not petted
+  else if (state == States::ANGRY) state = States::AFRAID; // reaching end of table
+  else state = States::PASSIVE;
 }
 
 void loop() {
@@ -34,13 +36,18 @@ void loop() {
 
     // State-aware actions
     switch(state) {
-      case States::RED:
+      case States::PASSIVE:
         digitalWrite(PIN_LED_R, HIGH);
+        digitalWrite(PIN_LED_G, HIGH);
+        digitalWrite(PIN_LED_B, HIGH);
         break;
-      case States::GREEN:
+      case States::HAPPY:
         digitalWrite(PIN_LED_G, HIGH);
         break;
-      case States::BLUE:
+      case States::ANGRY:
+        digitalWrite(PIN_LED_R, HIGH);
+        break;
+      case States::AFRAID:
         digitalWrite(PIN_LED_B, HIGH);
         break;
     }
