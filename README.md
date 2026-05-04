@@ -4,6 +4,7 @@ Group Project for Interactive Systems - a robotic pet that cheers you up by crea
 Input
 * Ultraschall Sensor
 * Kapazitiver Sensor
+
 Output
 * LED
 * Fahrgestell
