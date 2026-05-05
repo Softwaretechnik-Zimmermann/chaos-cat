@@ -45,3 +45,6 @@ An einer Tischkante wo sich die Chaos-Cat nicht selbst retten kann (Ultraschall 
 
 # Visualisierung der Idee
 ![](example-img.jpeg)
+
+![](Chaos-Cat UML.png)
+
