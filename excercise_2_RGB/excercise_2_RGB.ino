@@ -24,7 +24,7 @@ void nextState() {
   if (state == States::PASSIVE) state = States::HAPPY; // after time
   else if (state == States::HAPPY) state = States::ANGRY; // after time if not petted
   else if (state == States::ANGRY) state = States::AFRAID; // reaching end of table
-  // else state = States::PASSIVE; loop
+  else state = States::PASSIVE; // loop
 }
 
 void loop() {
