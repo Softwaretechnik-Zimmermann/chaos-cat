@@ -45,3 +45,6 @@ An einer Tischkante wo sich die Chaos-Cat nicht selbst retten kann (Ultraschall 
 
 # Visualisierung der Idee
 ![](example-img.jpeg)
+
+<img width="2768" height="1508" alt="Image" src="https://github.com/user-attachments/assets/578de6fd-bf4f-4c77-81b1-39e0e3ce99f3" />
+
