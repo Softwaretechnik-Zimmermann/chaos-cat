@@ -1,15 +1,7 @@
 # chaos-cat
 Gruppenarbeit Interaktive Systeme - Ein Roboter Haustier das dich durch Chaos aufheitert. Eine Katze die auf deinem Schreibtisch umherfährt und Aufmerksamkeit braucht um ruhig zu bleiben. Wenn es wütend wird schiebt es die Sachen umher uder schiebt diese ganz vom Tisch.
-# Umsetzung
-* Software
-    * Status basierte Schleifen, Zeitabfolgen
-    * Zufällige Fahrbewegungen
-* Technik
-    * Geschwindigkeit der Motoren
-    * Empfindlichhkeit der Sensoren
-* 3D gedruckte Teile
-    * 3D-Modellierung
-    * Drucken und Anpassungen
+# Visualisierung der Idee
+![](example-img.jpeg)
 # IO
 Input
 * Ultraschall Sensor
@@ -42,9 +34,8 @@ An einer Tischkante wo sich die Chaos-Cat nicht selbst retten kann (Ultraschall 
 * Buzzer piebt hektisch
 * Bleibt stehen
 * Servomotor bleibt stehen
+# Ablaufdiagramm
+![](Chaos-Cat-UML.png)
 
-# Visualisierung der Idee
-![](example-img.jpeg)
 
-<img width="2768" height="1508" alt="Image" src="https://github.com/user-attachments/assets/578de6fd-bf4f-4c77-81b1-39e0e3ce99f3" />
 
