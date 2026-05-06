@@ -24,7 +24,7 @@ void nextState() {
   if (state == States::PASSIVE) state = States::HAPPY; // after time
   else if (state == States::HAPPY) state = States::ANGRY; // after time if not petted
   else if (state == States::ANGRY) state = States::AFRAID; // reaching end of table
-  else state = States::PASSIVE;
+  // else state = States::PASSIVE; loop
 }
 
 void loop() {
@@ -53,7 +53,7 @@ void loop() {
     }
 
     // Simulate some delay and then switch to the next state
-    delay(1000);
+    delay(3000);
     nextState();
 
   }
