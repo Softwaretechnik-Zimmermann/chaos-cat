@@ -3,12 +3,14 @@ const uint8_t PIN_LED_G = 10;
 const uint8_t PIN_LED_B = 12;
 const uint8_t SEND_PIN = 6; // Resistor
 const uint8_t RECIEVE_PIN = 7; // copper foil to touch
+const uint8_t SERVO_PIN = 2;
 
 void setup() {
   pinMode(PIN_LED_R, OUTPUT);
   pinMode(PIN_LED_G, OUTPUT);
   pinMode(PIN_LED_B, OUTPUT);
   pinMode(SEND_PIN, OUTPUT);
+  pinMode(SERVO_PIN,OUTPUT);  
 }
 
 enum State {
@@ -20,8 +22,12 @@ enum State {
 
 State currentState = State::PASSIVE; // Set the initial state
 int timer = 0;
-int passiveToHappyWait = 3; // in Seconds
-int happyToAngryWait = 6;
+int servoTimer = 1;
+int passiveToHappyWait = 2; // in Seconds
+int happyToAngryWait = 2;
+const int minValue = 0;
+const int maxValue = 180;
+bool servoFwd = true;
 
 void loop() {
   resetState();
@@ -43,12 +49,16 @@ void loop() {
 
   timer++;
   int loopDelay = 10;
-  delay(loopSpeed);
+  delay(loopDelay);
   if(currentState == State::PASSIVE && timer > passiveToHappyWait * 1000 / loopDelay || currentState == State::HAPPY && timer > happyToAngryWait * 1000 / loopDelay){
     timer = 0;
     nextState();
   }
 
+  if(servoTimer > 90 || servoTimer < 1){
+    servoFwd = !servoFwd;
+  }
+  setServo(servoTimer);
   // Touch detection
   readTouch();
 }
@@ -73,6 +83,15 @@ void readTouch(){
   }
 }
 
+// Output
+void setServo(int pos) {
+  int puls = map(pos,minValue,maxValue,400,2400);
+  digitalWrite(SERVO_PIN,HIGH);
+  delayMicroseconds(puls);
+  digitalWrite(SERVO_PIN,LOW);
+  delay(19);
+}
+
 // State Logic
 void nextState() {
   if (currentState == State::PASSIVE) currentState = State::HAPPY; 
@@ -87,6 +106,13 @@ void resetState(){
 }
 
 void setPassiveState(){
+  if(servoFwd){
+    servoTimer++;
+  }
+  else{
+    servoTimer--;
+  }
+
   // White LEDs
   digitalWrite(PIN_LED_R, HIGH);
   digitalWrite(PIN_LED_G, HIGH);
@@ -94,10 +120,24 @@ void setPassiveState(){
 }
 
 void setHappyState(){
+  if(servoFwd){
+    servoTimer += 2;
+  }
+  else{
+    servoTimer -=2;
+  }
+
   digitalWrite(PIN_LED_G, HIGH); // Green LEDs
 }
 
 void setAngryState(){
+    if(servoFwd){
+    servoTimer += 4;
+  }
+  else{
+    servoTimer -=4;
+  }
+
   digitalWrite(PIN_LED_R, HIGH); // Red LEDs
 }
 
