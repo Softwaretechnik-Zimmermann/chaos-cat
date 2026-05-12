@@ -3,7 +3,7 @@ const uint8_t PIN_LED_G = 10;
 const uint8_t PIN_LED_B = 12;
 const uint8_t SEND_PIN = 6; // Resistor
 const uint8_t RECIEVE_PIN = 7; // copper foil to touch
-const uint8_t SERVO_PIN = 2;
+const uint8_t SERVO_PIN = 4;
 
 void setup() {
   pinMode(PIN_LED_R, OUTPUT);
@@ -52,7 +52,7 @@ void loop() {
   delay(loopDelay);
   if(currentState == State::PASSIVE && timer > passiveToHappyWait * 1000 / loopDelay || currentState == State::HAPPY && timer > happyToAngryWait * 1000 / loopDelay){
     timer = 0;
-    nextState();
+    //nextState();
   }
 
   if(servoTimer > 180 || servoTimer < 1){
@@ -60,7 +60,7 @@ void loop() {
   }
   setServo(servoTimer);
   // Touch detection
-  readTouch();
+  //readTouch();
 }
 
 // Input read
@@ -89,7 +89,7 @@ void setServo(int pos) {
   digitalWrite(SERVO_PIN,HIGH);
   delayMicroseconds(puls);
   digitalWrite(SERVO_PIN,LOW);
-  delay(19);
+  delayMicroseconds(20000 - puls);
 }
 
 // State Logic
