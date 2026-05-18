@@ -120,7 +120,7 @@ void driveForward(int speed){ // TODO Überarbeiten
     } else if (time % 1000 > 600 && time % 1000 < 800){
       driveLeft(speed);
     } else {
-    drive(true, true, speed);
+    drive(true, true, speed, speed);
     }
   }
   if(currentState == State::ANGRY){
@@ -129,38 +129,38 @@ void driveForward(int speed){ // TODO Überarbeiten
     } else if (time % 100 > 60 && time % 100 < 90){
       driveLeft(speed);
     } else {
-    drive(true, true, speed);
+    drive(true, true, speed, speed);
     }
   }
 }
 
 void driveBackward(int speed){
-  drive(false, false, speed);
+  drive(false, false, speed, speed);
 }
 
 void driveLeft(int speed){
-  drive(false, true, speed);
+  drive(false, true, speed - 50, speed);
 }
 
 void driveRight(int speed){
-  drive(true, false, speed);
+  drive(true, false, speed, speed - 50);
 }
 
-void drive(bool leftFWD, bool rightFWD, int speed){ // FWD = False means backwards, speed range from 0 to 255
+void drive(bool leftFWD, bool rightFWD, int speedL, int speedR){ // FWD = False means backwards, speed range from 0 to 255
   if (leftFWD){
     digitalWrite(DIRA_MOTOR, HIGH); // forward direction A
   } else {    
     digitalWrite(DIRA_MOTOR, LOW); // backward direction A
   }
   digitalWrite(BREAKER_A_MOTOR, LOW); // Brake A off
-  analogWrite(PWMA_MOTOR, speed); // Spins the motor A 
+  analogWrite(PWMA_MOTOR, speedL); // Spins the motor A 
   if (rightFWD){
     digitalWrite(DIRB_MOTOR, HIGH); // forward direction B
   } else {    
     digitalWrite(DIRB_MOTOR, LOW); // backward direction B
   }
   digitalWrite(BREAKER_B_MOTOR, LOW); // Brake B off
-  analogWrite(PWMB_MOTOR, speed); // Spins the motor B
+  analogWrite(PWMB_MOTOR, speedR); // Spins the motor B
 }
 
 // State Logic
