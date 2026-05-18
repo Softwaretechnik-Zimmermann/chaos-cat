@@ -35,7 +35,7 @@ int timer = 0;
 long time = 0;
 int servoTimer = 1;
 int passiveToHappyWait = 2; // in Seconds
-int happyToAngryWait = 2;
+int happyToAngryWait = 20;
 const int minValue = 0;
 const int maxValue = 180;
 bool servoFwd = true;
@@ -114,12 +114,23 @@ void setServo(int pos) { // TODO use Library
 
 // Output - Motor
 void driveForward(int speed){ // TODO Überarbeiten
-  if (time % 100 > 1 && time % 100 < 10){ 
-    driveRight(255);
-  } else if (time % 100 > 21 && time % 100 < 30){
-    driveLeft(255);
-  } else {
-  drive(true, true, speed);
+  if(currentState == State::HAPPY){
+    if (time % 1000 > 1 && time % 1000 < 200){ 
+      driveRight(speed);
+    } else if (time % 1000 > 600 && time % 1000 < 800){
+      driveLeft(speed);
+    } else {
+    drive(true, true, speed);
+    }
+  }
+  if(currentState == State::ANGRY){
+    if (time % 100 > 1 && time % 100 < 30){ 
+      driveRight(speed);
+    } else if (time % 100 > 60 && time % 100 < 90){
+      driveLeft(speed);
+    } else {
+    drive(true, true, speed);
+    }
   }
 }
 
