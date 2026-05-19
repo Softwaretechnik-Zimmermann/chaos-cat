@@ -221,4 +221,6 @@ void setAfraidState(){
   // try driving backwards
   driveBackward(255);
   delay(1000);
+  driveLeft(255);
+  delay(1000);
 }
