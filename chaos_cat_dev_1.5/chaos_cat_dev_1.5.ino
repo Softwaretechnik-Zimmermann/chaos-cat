@@ -55,6 +55,11 @@ const int servoMinAngle = 0;
 const int servoMaxAngle = 90;
 bool servoFwd = true;
 
+unsigned long lastSound = 0;
+unsigned long happyTime = 0;
+bool secondTone = false;
+
+
 void loop() {
   resetState();
 
@@ -75,6 +80,7 @@ void loop() {
 
   timer++;
   time++;
+  updateBuzzer();
 
   int loopDelay = 10;
   delay(loopDelay);
