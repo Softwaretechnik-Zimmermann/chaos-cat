@@ -18,20 +18,30 @@ const uint8_t PWMB_MOTOR = 11;
 const uint8_t DIRA_MOTOR = 12;
 const uint8_t DIRB_MOTOR = 13;
 
+const uint8_t TRIG_PIN = A0; 
+const uint8_t ECHO_PIN = A1; 
+
 const uint8_t BUZZER_PIN = A2;
 
 Servo tailServo;
 
 void setup() {
   tailServo.attach(SERVO_PIN, SERVO_MIN_PULSE, SERVO_MAX_PULSE);
+
   pinMode(SEND_PIN, OUTPUT);
+
   pinMode(PIN_LED_R, OUTPUT);
   pinMode(PIN_LED_G, OUTPUT);
   pinMode(PIN_LED_B, OUTPUT);
+
   pinMode(BREAKER_B_MOTOR,OUTPUT);  
   pinMode(BREAKER_A_MOTOR,OUTPUT);  
   pinMode(DIRA_MOTOR,OUTPUT);  
   pinMode(DIRB_MOTOR,OUTPUT);  
+
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+
   pinMode(BUZZER_PIN, OUTPUT);
 }
 
@@ -120,8 +130,23 @@ void readTouch(){
 
 // Input - ultrasonic Sensor
 void readUltrasonic(){
-  // TODO
-  // if range is large: currentState = State::AFRAID
+  if (currentState == State::AFRAID) return;
+
+  // Puls senden
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+  
+  // Zeit messen (Timeout nach 20ms)
+  long duration = pulseIn(ECHO_PIN, HIGH, 20000); 
+  int distance = duration * 0.034 / 2; // Umrechnung in cm
+  
+  if(distance > 2){ // ende der Tischkante = großer Abstand zum Sensor
+    currentState = State::AFRAID;
+    timer = 0;
+  }
 }
 
 // Output - Servo
