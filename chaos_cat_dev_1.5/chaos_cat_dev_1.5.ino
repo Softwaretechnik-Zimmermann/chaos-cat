@@ -27,6 +27,8 @@ Servo tailServo;
 
 void setup() {
   tailServo.attach(SERVO_PIN, SERVO_MIN_PULSE, SERVO_MAX_PULSE);
+  Serial.begin(9600);  
+  Serial.println("Ultrasonic sensor:");
 
   pinMode(SEND_PIN, OUTPUT);
 
@@ -53,6 +55,7 @@ enum State {
 };
 
 State currentState = State::PASSIVE; // Set the initial state
+State preState = State::PASSIVE; // Set the previous state
 
 int timer = 0;
 long time = 0;
@@ -132,21 +135,33 @@ void readTouch(){
 void readUltrasonic(){
   if (currentState == State::AFRAID) return;
 
-  // Puls senden
+  unsigned long distance = readDistanceAverage();
+
+  if(distance > 10){ // ende der Tischkante = großer Abstand zum Sensor
+    if (currentState != State::AFRAID)
+      preState = currentState;
+    currentState = State::AFRAID;
+  }
+}
+
+unsigned long readDistanceAverage() {
+  unsigned long sum = 0;
+  for (int i = 0; i < 4; i++) sum += readDistance();
+  return sum / 4;
+}
+
+unsigned long readDistance() {
   digitalWrite(TRIG_PIN, LOW);
   delayMicroseconds(2);
   digitalWrite(TRIG_PIN, HIGH);
   delayMicroseconds(10);
   digitalWrite(TRIG_PIN, LOW);
-  
-  // Zeit messen (Timeout nach 20ms)
-  long duration = pulseIn(ECHO_PIN, HIGH, 20000); 
+
+  unsigned long duration = pulseIn(ECHO_PIN, HIGH, 20000); 
   int distance = duration * 0.034 / 2; // Umrechnung in cm
-  
-  if(distance > 2){ // ende der Tischkante = großer Abstand zum Sensor
-    currentState = State::AFRAID;
-    timer = 0;
-  }
+
+  Serial.println(distance);
+  return distance;
 }
 
 // Output - Servo
@@ -314,5 +329,6 @@ void setAfraidState(){
   delay(500);
   // try driving backwards
   driveBackward(255);
-  delay(1000);
+  delay(2000);
+  currentState = preState;
 }
