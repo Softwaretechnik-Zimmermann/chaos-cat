@@ -199,24 +199,6 @@ void updateBuzzer(){
         tone(BUZZER_PIN,300,150);
       }
       break;
-
-    case AFRAID:
-      if(millis()-lastSound>8000){
-        lastSound=millis();
-        // SOS
-        tone(BUZZER_PIN,1200,150); delay(250);
-        tone(BUZZER_PIN,1200,150); delay(250);
-        tone(BUZZER_PIN,1200,150); delay(250);
-
-        tone(BUZZER_PIN,1200,450); delay(550);
-        tone(BUZZER_PIN,1200,450); delay(550);
-        tone(BUZZER_PIN,1200,450); delay(550);
-
-        tone(BUZZER_PIN,1200,150); delay(250);
-        tone(BUZZER_PIN,1200,150); delay(250);
-        tone(BUZZER_PIN,1200,150); delay(250);
-      }
-      break;
   }
 }
 
@@ -326,9 +308,23 @@ void setAfraidState(){
   digitalWrite(PIN_LED_B, HIGH); // Blue LEDs
   digitalWrite(BREAKER_A_MOTOR, HIGH); // Brake A on
   digitalWrite(BREAKER_B_MOTOR, HIGH); // Brake B on
-  delay(500);
+  //delay(500);
   // try driving backwards
   driveBackward(255);
-  delay(2000);
+  // SOS
+  int SOSDelay = 200;
+  int shortDel = SOSDelay -100;
+  tone(BUZZER_PIN,1200,shortDel); delay(SOSDelay);
+  tone(BUZZER_PIN,1200,shortDel); delay(SOSDelay);
+  tone(BUZZER_PIN,1200,shortDel); delay(SOSDelay);
+
+  tone(BUZZER_PIN,1200,2*SOSDelay-100); delay(2*SOSDelay);
+  tone(BUZZER_PIN,1200,2*SOSDelay-100); delay(2*SOSDelay);
+  tone(BUZZER_PIN,1200,2*SOSDelay-100); delay(2*SOSDelay);
+
+  tone(BUZZER_PIN,1200,shortDel); delay(SOSDelay);
+  tone(BUZZER_PIN,1200,shortDel); delay(SOSDelay);
+  tone(BUZZER_PIN,1200,shortDel); delay(SOSDelay);
+
   currentState = preState;
 }
