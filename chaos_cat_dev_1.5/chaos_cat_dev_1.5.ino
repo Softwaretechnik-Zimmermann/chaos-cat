@@ -62,10 +62,10 @@ long time = 0;
 int servoTimer = 1;
 
 int passiveToHappyWait = 2; // in Seconds
-int happyToAngryWait = 20;
+int happyToAngryWait = 2;
 
 const int servoMinAngle = 0;
-const int servoMaxAngle = 90;
+const int servoMaxAngle = 30;
 bool servoFwd = true;
 
 unsigned long lastSound = 0;
@@ -91,11 +91,11 @@ void loop() {
       break;
   }
 
-  timer++;
-  time++;
+  timer += 2;
+  time += 2;
   updateBuzzer();
 
-  int loopDelay = 10;
+  int loopDelay = 20;
   delay(loopDelay);
   if(currentState == State::PASSIVE && timer > passiveToHappyWait * 1000 / loopDelay || currentState == State::HAPPY && timer > happyToAngryWait * 1000 / loopDelay){
     timer = 0;
@@ -284,10 +284,10 @@ void setPassiveState(){
 
 void setHappyState(){
   if(servoFwd){
-    servoTimer += 2;
+    servoTimer ++;
   }
   else{
-    servoTimer -=2;
+    servoTimer --;
   }
   driveForward(255);
   digitalWrite(PIN_LED_G, HIGH); // Green LEDs
@@ -295,10 +295,10 @@ void setHappyState(){
 
 void setAngryState(){
     if(servoFwd){
-    servoTimer += 4;
+    servoTimer += 2;
   }
   else{
-    servoTimer -=4;
+    servoTimer -=2;
   }
   driveForward(255);
   digitalWrite(PIN_LED_R, HIGH); // Red LEDs
