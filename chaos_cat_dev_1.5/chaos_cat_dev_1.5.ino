@@ -1,6 +1,5 @@
 #include <Servo.h>
 
-const uint8_t SERVO_PIN = 2;
 const int SERVO_MIN_PULSE = 420;
 const int SERVO_MAX_PULSE = 2420;
 
@@ -22,6 +21,8 @@ const uint8_t TRIG_PIN = A0;
 const uint8_t ECHO_PIN = A1; 
 
 const uint8_t BUZZER_PIN = A2;
+
+const uint8_t SERVO_PIN = A3;
 
 Servo tailServo;
 
@@ -59,7 +60,7 @@ State preState = State::PASSIVE; // Set the previous state
 
 int timer = 0;
 long time = 0;
-int servoTimer = 1;
+float servoTimer = 1;
 
 int passiveToHappyWait = 2; // in Seconds
 int happyToAngryWait = 2;
@@ -91,11 +92,11 @@ void loop() {
       break;
   }
 
-  timer += 2;
-  time += 2;
+  timer ++;
+  time ++;
   updateBuzzer();
 
-  int loopDelay = 20;
+  int loopDelay = 1;
   delay(loopDelay);
   if(currentState == State::PASSIVE && timer > passiveToHappyWait * 1000 / loopDelay || currentState == State::HAPPY && timer > happyToAngryWait * 1000 / loopDelay){
     timer = 0;
@@ -107,8 +108,12 @@ void loop() {
   }
 
   setServo(servoTimer);
-  readTouch();
-  readUltrasonic();
+
+  if (time % 2 == 1){ 
+    readTouch();
+  } else {
+    readUltrasonic();
+  }
 }
 
 // Input - capacitive Sensor
@@ -135,7 +140,7 @@ void readTouch(){
 void readUltrasonic(){
   if (currentState == State::AFRAID) return;
 
-  unsigned long distance = readDistanceAverage();
+  unsigned long distance = readDistance();
 
   if(distance > 10){ // ende der Tischkante = großer Abstand zum Sensor
     if (currentState != State::AFRAID)
@@ -166,7 +171,7 @@ unsigned long readDistance() {
 
 // Output - Servo
 void setServo(int pos) {
-  tailServo.write(constrain(pos, servoMinAngle, servoMaxAngle));
+  tailServo.write(pos);
 }
 
 // Output - Buzzer
@@ -269,10 +274,10 @@ void resetState(){
 
 void setPassiveState(){
   if(servoFwd){
-    servoTimer++;
+    servoTimer += 0.2;
   }
   else{
-    servoTimer--;
+    servoTimer -= 0.2;
   }
   digitalWrite(BREAKER_A_MOTOR, HIGH); // Brake A on
   digitalWrite(BREAKER_B_MOTOR, HIGH); // Brake B on
@@ -284,10 +289,10 @@ void setPassiveState(){
 
 void setHappyState(){
   if(servoFwd){
-    servoTimer ++;
+    servoTimer += 0.5;
   }
   else{
-    servoTimer --;
+    servoTimer -= 0.5;
   }
   driveForward(255);
   digitalWrite(PIN_LED_G, HIGH); // Green LEDs
@@ -295,10 +300,10 @@ void setHappyState(){
 
 void setAngryState(){
     if(servoFwd){
-    servoTimer += 2;
+    servoTimer += 1;
   }
   else{
-    servoTimer -=2;
+    servoTimer -= 1;
   }
   driveForward(255);
   digitalWrite(PIN_LED_R, HIGH); // Red LEDs
