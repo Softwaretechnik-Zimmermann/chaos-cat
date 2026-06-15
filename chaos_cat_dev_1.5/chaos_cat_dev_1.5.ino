@@ -96,7 +96,7 @@ void loop() {
   time ++;
   updateBuzzer();
 
-  int loopDelay = 1;
+  int loopDelay = 10;
   delay(loopDelay);
   if(currentState == State::PASSIVE && timer > passiveToHappyWait * 1000 / loopDelay || currentState == State::HAPPY && timer > happyToAngryWait * 1000 / loopDelay){
     timer = 0;
@@ -300,10 +300,10 @@ void setHappyState(){
 
 void setAngryState(){
     if(servoFwd){
-    servoTimer += 1;
+    servoTimer += 0.8;
   }
   else{
-    servoTimer -= 1;
+    servoTimer -= 0.8;
   }
   driveForward(255);
   digitalWrite(PIN_LED_R, HIGH); // Red LEDs
