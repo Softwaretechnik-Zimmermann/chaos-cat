@@ -62,8 +62,8 @@ int timer = 0;
 long time = 0;
 float servoTimer = 1;
 
-int passiveToHappyWait = 2; // in Seconds
-int happyToAngryWait = 2;
+int passiveToHappyWait = 5; // in Seconds
+int happyToAngryWait = 20;
 
 const int servoMinAngle = 0;
 const int servoMaxAngle = 30;
