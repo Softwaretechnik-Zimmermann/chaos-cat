@@ -331,5 +331,12 @@ void setAfraidState(){
   tone(BUZZER_PIN,1200,shortDel); delay(SOSDelay);
   tone(BUZZER_PIN,1200,shortDel); delay(SOSDelay);
 
-  currentState = preState;
+    unsigned long distance = readDistance();
+
+  if(distance > 10){
+    currentState = State::AFRAID;
+  }
+  else{
+    currentState = preState;
+  }
 }
